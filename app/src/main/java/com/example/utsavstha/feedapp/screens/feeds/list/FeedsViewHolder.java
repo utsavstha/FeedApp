@@ -5,4 +5,5 @@ package com.example.utsavstha.feedapp.screens.feeds.list;
  */
 
 public class FeedsViewHolder {
+
 }
