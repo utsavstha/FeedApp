@@ -2,6 +2,7 @@ package com.example.utsavstha.feedapp.screens.signIn.core;
 
 import com.example.utsavstha.feedapp.models.UserDao;
 import com.example.utsavstha.feedapp.utils.rxUtils.RxSchedulers;
+import com.google.firebase.auth.FirebaseAuth;
 
 import rx.Observable;
 import rx.Observer;
@@ -20,18 +21,22 @@ public class SignInPresenter {
     private SignInModel mModel;
     private SignInView mSignInView;
     private RxSchedulers mRxSchedulers;
-    private CompositeSubscription subscription;
+    private CompositeSubscription mSubscription;
 
     public SignInPresenter(SignInModel signInModel, SignInView signInView,RxSchedulers rxSchedulers, CompositeSubscription compositeSubscription){
         this.mModel = signInModel;
         this.mRxSchedulers = rxSchedulers;
-        this.subscription = compositeSubscription;
+        this.mSubscription = compositeSubscription;
         this.mSignInView = signInView;
     }
 
     public void onCreate(){
-        subscription.add(signIn());
-        subscription.add(register());
+        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+            mModel.gotoFeedsListActivity();
+            return;
+        }
+        mSubscription.add(signIn());
+        mSubscription.add(register());
     }
 
     private Subscription register() {
@@ -56,7 +61,7 @@ public class SignInPresenter {
 
 
     public void onDestroy(){
-        subscription.clear();
+        mSubscription.clear();
     }
 
 

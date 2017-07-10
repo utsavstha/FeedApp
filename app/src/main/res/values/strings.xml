@@ -8,4 +8,5 @@
     <string name="login">Login</string>
     <string name="dummy_text">Utsav Shrestha</string>
     <string name="upload">Select Image</string>
+    <string name="dummy_status">Hello this is dummy status</string>
 </resources>
