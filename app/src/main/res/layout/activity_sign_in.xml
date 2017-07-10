@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/tv_input_email"
+                    android:id="@+id/et_input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_email"
@@ -36,18 +36,25 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/tv_input_password"
+                    android:id="@+id/et_input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/normal_padding"
                 android:text="@string/login" />
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/normal_padding"
+                android:text="@string/register" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

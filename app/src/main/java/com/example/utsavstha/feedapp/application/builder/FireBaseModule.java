@@ -2,6 +2,8 @@ package com.example.utsavstha.feedapp.application.builder;
 
 import android.os.Bundle;
 
+import com.example.utsavstha.feedapp.utils.firebaseUtils.ApplicationFireBase;
+import com.example.utsavstha.feedapp.utils.firebaseUtils.FireBaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -16,25 +18,10 @@ import dagger.Provides;
 
 @Module
 public class FireBaseModule {
-    private FirebaseUser mFireBaseUser;
-    private DatabaseReference mFireBaseDb;
 
     @AppScope
     @Provides
-    FirebaseAuth providesFireBaseAuth(){
-        return FirebaseAuth.getInstance();
+    FireBaseApp provideFireBaseApp(){
+       return new ApplicationFireBase();
     }
-
-    @AppScope
-    @Provides
-    FirebaseUser providesFireBaseUser(FirebaseAuth firebaseAuth){
-        return firebaseAuth.getCurrentUser();
-    }
-
-    @AppScope
-    @Provides
-    FirebaseDatabase providesFireBaseDatabase(){
-        return FirebaseDatabase.getInstance();
-    }
-
 }
