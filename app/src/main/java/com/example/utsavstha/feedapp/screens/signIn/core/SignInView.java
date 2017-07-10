@@ -24,34 +24,18 @@ import rx.subjects.PublishSubject;
 
 public class SignInView {
     private View mView;
-    SignInPresenter mSignInPresenter;
-    private final PublishSubject<UserDao> loginClick = PublishSubject.create();
-    private final PublishSubject<Boolean> registerClick = PublishSubject.create();
+    private final PublishSubject<UserDao> mLoginClick = PublishSubject.create();
+    private final PublishSubject<Boolean> mRegisterClick = PublishSubject.create();
 
-    // @BindView(R.id.input_layout_email)
-    TextInputLayout emailLayout;
-  //  @BindView(R.id.input_layout_password)
-    TextInputLayout passwordLayout;
+    private TextInputLayout mEmailLayout;
 
-   // @BindView(R.id.et_input_email)
-    EditText email;
-   // @BindView(R.id.et_input_password)
-    EditText password;
+    private TextInputLayout mPasswordLayout;
 
-   // @BindView(R.id.btn_login)
-    Button login;
+    private EditText mEmail;
 
-   /* @OnClick(R.id.btn_login)
-    public void onLogin() {
-        if(TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString())){
-            emailLayout.setError("This field cannot be empty.");
-            passwordLayout.setError("This field cannot be empty.");
-        }else {
-            UserDao userDao = new UserDao();
-            user
-            loginClick.onNext(true);
-        }
-    }*/
+    private EditText mPassword;
+
+    private Button mLogin, mRegister;
 
 
     public SignInView(SignInActivity signInActivity) {
@@ -61,35 +45,37 @@ public class SignInView {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         mView = LayoutInflater.from(signInActivity).inflate(R.layout.activity_sign_in, parent, true);
-        ButterKnife.bind(signInActivity, mView);
 
-        emailLayout = mView.findViewById(R.id.input_layout_email);
-        passwordLayout = mView.findViewById(R.id.input_layout_password);
 
-        email = mView.findViewById(R.id.et_input_email);
-        password = mView.findViewById(R.id.et_input_password);
+        mEmailLayout = mView.findViewById(R.id.input_layout_email);
+        mPasswordLayout = mView.findViewById(R.id.input_layout_password);
 
-        login = mView.findViewById(R.id.btn_login);
+        mEmail = mView.findViewById(R.id.et_input_email);
+        mPassword = mView.findViewById(R.id.et_input_password);
 
-        login.setOnClickListener(new View.OnClickListener() {
+        mLogin = mView.findViewById(R.id.btn_login);
+
+        mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(email.getText().toString()) || TextUtils.isEmpty(password.getText().toString())){
-                    emailLayout.setError("This field cannot be empty.");
-                    passwordLayout.setError("This field cannot be empty.");
+                if(TextUtils.isEmpty(mEmail.getText().toString()) || TextUtils.isEmpty(mPassword.getText().toString())){
+                    mEmailLayout.setError("This field cannot be empty.");
+                    mPasswordLayout.setError("This field cannot be empty.");
                 }else {
                     UserDao user = new UserDao();
-                    user.setmEmail(email.getText().toString().trim());
-                    user.setmPassword(password.getText().toString().trim());
-                    loginClick.onNext(user);
+                    user.setmEmail(mEmail.getText().toString().trim());
+                    user.setmPassword(mPassword.getText().toString().trim());
+                    mLoginClick.onNext(user);
                 }
             }
         });
 
-        mView.findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
+        mRegister = mView.findViewById(R.id.btn_register);
+
+        mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registerClick.onNext(true);
+                mRegisterClick.onNext(true);
             }
         });
 
@@ -102,11 +88,11 @@ public class SignInView {
     }
 
     public Observable<UserDao> loginClicks() {
-        return loginClick;
+        return mLoginClick;
     }
 
     public Observable<Boolean> registerClicks(){
-        return registerClick;
+        return mRegisterClick;
     }
 
 }

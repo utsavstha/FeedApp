@@ -37,6 +37,7 @@ public class SignInActivity extends AppCompatActivity {
     }
     public void gotoFeedListActivity(){
         startActivity(new Intent(SignInActivity.this, FeedsActivity.class));
+        finish();
     }
 
     @Override

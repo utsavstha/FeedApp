@@ -1,10 +1,7 @@
 package com.example.utsavstha.feedapp.screens.signIn.core;
 
 import com.example.utsavstha.feedapp.models.UserDao;
-import com.example.utsavstha.feedapp.utils.UIUtils;
 import com.example.utsavstha.feedapp.utils.rxUtils.RxSchedulers;
-
-import java.security.Signer;
 
 import rx.Observable;
 import rx.Observer;
@@ -23,18 +20,18 @@ public class SignInPresenter {
     private SignInModel mModel;
     private SignInView mSignInView;
     private RxSchedulers mRxSchedulers;
-    private CompositeSubscription mSubcription;
+    private CompositeSubscription subscription;
 
     public SignInPresenter(SignInModel signInModel, SignInView signInView,RxSchedulers rxSchedulers, CompositeSubscription compositeSubscription){
         this.mModel = signInModel;
         this.mRxSchedulers = rxSchedulers;
-        this.mSubcription = compositeSubscription;
+        this.subscription = compositeSubscription;
         this.mSignInView = signInView;
     }
 
     public void onCreate(){
-        mSubcription.add(signIn());
-        mSubcription.add(register());
+        subscription.add(signIn());
+        subscription.add(register());
     }
 
     private Subscription register() {
@@ -57,15 +54,11 @@ public class SignInPresenter {
     }
 
 
-   /* public void onLoginPressed(String email, String password){
-
-    }*/
 
     public void onDestroy(){
-        mSubcription.clear();
+        subscription.clear();
     }
 
-    //todo check here
 
     private Subscription signIn(){
         return mModel.isNetworkAvailable().doOnNext(new Action1<Boolean>() {

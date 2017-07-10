@@ -65,43 +65,6 @@ public class SignInModel {
                 });
     }
 
-   /* public void registerToFireBase(final String name, final String email, final String password, final String imagePath){
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(mSignInActivity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Timber.d("createUserWithEmail:success");
-                            mUser = mAuth.getCurrentUser();
 
-                            updateUser(name, imagePath);
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Timber.w("createUserWithEmail:failure", task.getException());
-                            Toast.makeText(mSignInActivity, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                });
-    }
-
-    private void updateUser(String name, String imagePath) {
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName(name)
-                .setPhotoUri(Uri.parse(imagePath))
-                .build();
-        mUser.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    String url = mUser.getPhotoUrl().toString();
-                }
-            }
-        }) ;
-    }*/
 
 }
