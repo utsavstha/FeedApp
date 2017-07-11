@@ -33,7 +33,10 @@ public class FeedsPresenter {
 
     private Subscription getList() {
 
-        return mFeedsModel.getFeedsList().subscribe(new Subscriber<List<FeedDao>>() {
+        return mFeedsModel.getFeedsList()
+                .subscribeOn(mRxSchedulers.internet())
+                .observeOn(mRxSchedulers.androidThread())
+                .subscribe(new Subscriber<List<FeedDao>>() {
             @Override
             public void onCompleted() {
 
