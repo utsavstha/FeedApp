@@ -7,6 +7,7 @@ import java.util.List;
 
 import rx.Subscriber;
 import rx.Subscription;
+import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -31,6 +32,7 @@ public class FeedsPresenter {
     }
 
     private Subscription getList() {
+
         return mFeedsModel.getFeedsList().subscribe(new Subscriber<List<FeedDao>>() {
             @Override
             public void onCompleted() {

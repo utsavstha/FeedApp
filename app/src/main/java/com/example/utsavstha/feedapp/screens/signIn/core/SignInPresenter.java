@@ -23,15 +23,15 @@ public class SignInPresenter {
     private RxSchedulers mRxSchedulers;
     private CompositeSubscription mSubscription;
 
-    public SignInPresenter(SignInModel signInModel, SignInView signInView,RxSchedulers rxSchedulers, CompositeSubscription compositeSubscription){
+    public SignInPresenter(SignInModel signInModel, SignInView signInView, RxSchedulers rxSchedulers, CompositeSubscription compositeSubscription) {
         this.mModel = signInModel;
         this.mRxSchedulers = rxSchedulers;
         this.mSubscription = compositeSubscription;
         this.mSignInView = signInView;
     }
 
-    public void onCreate(){
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+    public void onCreate() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             mModel.gotoFeedsListActivity();
             return;
         }
@@ -59,17 +59,16 @@ public class SignInPresenter {
     }
 
 
-
-    public void onDestroy(){
+    public void onDestroy() {
         mSubscription.clear();
     }
 
 
-    private Subscription signIn(){
+    private Subscription signIn() {
         return mModel.isNetworkAvailable().doOnNext(new Action1<Boolean>() {
             @Override
             public void call(Boolean networkAvailable) {
-                if(!networkAvailable){
+                if (!networkAvailable) {
                     Timber.d("No internet connection.");
                 }
             }
@@ -101,7 +100,7 @@ public class SignInPresenter {
 
                     @Override
                     public void onNext(Boolean aBoolean) {
-                        if(aBoolean){
+                        if (aBoolean) {
                             //do firebase login
                             mSignInView.loginClicks().subscribe(new Observer<UserDao>() {
                                 @Override
