@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -35,7 +36,7 @@ public class SignInPresenter {
             mModel.gotoFeedsListActivity();
             return;
         }
-        mSubscription.add(signIn());
+        mSubscription.add(getFirebaseLoginSubscription());
         mSubscription.add(register());
     }
 
@@ -64,30 +65,55 @@ public class SignInPresenter {
     }
 
 
-    private Subscription signIn() {
-        return mModel.isNetworkAvailable().doOnNext(new Action1<Boolean>() {
+    private Subscription signIn(final UserDao userDao) {
+
+        return mModel.isNetworkAvailable().filter(new Func1<Boolean, Boolean>() {
             @Override
-            public void call(Boolean networkAvailable) {
-                if (!networkAvailable) {
-                    Timber.d("No internet connection.");
-                }
+            public Boolean call(Boolean isNetworkAvailable) {
+                return isNetworkAvailable;
             }
-        }).
-                filter(new Func1<Boolean, Boolean>() {
-                    @Override
-                    public Boolean call(Boolean isNetworkAvailable) {
-                        return isNetworkAvailable;
-                    }
-                }).
-                flatMap(new Func1<Boolean, Observable<Boolean>>() {
-                    @Override
-                    public Observable<Boolean> call(Boolean aBoolean) {
-                        return mModel.isNetworkAvailable();
-                    }
-                }).
-                subscribeOn(mRxSchedulers.internet()).
+        }).subscribe(new Subscriber<Boolean>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Boolean isNetworkAvailable) {
+                mModel.loginFireBase(userDao.getmEmail(), userDao.getmPassword())
+                        .observeOn(mRxSchedulers.androidThread())
+                        .subscribeOn(mRxSchedulers.internet())
+                        .subscribe(new Subscriber<Boolean>() {
+                            @Override
+                            public void onCompleted() {
+
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Boolean loggedIn) {
+                                mModel.gotoFeedsListActivity();
+
+                            }
+                        });
+            }
+        });
+
+    }
+
+    private Subscription getFirebaseLoginSubscription() {
+        return mSignInView.loginClicks().subscribeOn(mRxSchedulers.internet()).
                 observeOn(mRxSchedulers.androidThread()).
-                subscribe(new Observer<Boolean>() {
+                subscribe(new Observer<UserDao>() {
                     @Override
                     public void onCompleted() {
 
@@ -95,32 +121,12 @@ public class SignInPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Timber.d(e.toString());
+
                     }
 
                     @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (aBoolean) {
-                            //do firebase login
-                            mSignInView.loginClicks().subscribe(new Observer<UserDao>() {
-                                @Override
-                                public void onCompleted() {
-
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onNext(UserDao userDao) {
-                                    mModel.loginFireBase(userDao.getmEmail(), userDao.getmPassword());
-                                }
-                            });
-
-                        }
-
+                    public void onNext(UserDao userDao) {
+                        mSubscription.add(signIn(userDao));
                     }
                 });
     }

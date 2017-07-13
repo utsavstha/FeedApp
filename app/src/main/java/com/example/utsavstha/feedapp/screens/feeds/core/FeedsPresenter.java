@@ -31,6 +31,7 @@ public class FeedsPresenter {
         mSubscription.add(getList());
     }
 
+
     private Subscription getList() {
 
         return mFeedsModel.getFeedsList()
